@@ -21,7 +21,7 @@ export const Posts = () => {
       <section className="section-post">
         <ol>
           {data.map((curPost) => {
-            return <Post key={curPost.id} curPost={curPost} />;
+            return <Post key={curPost.id} curPost={curPost} data={data}setData={setData}/>;
           })}
         </ol>
       </section>

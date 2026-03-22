@@ -9,7 +9,12 @@ export const getPost = () => {
   return api.get("/posts");
 };
 
-// Post Request and Create Operation
-export const PostData = (post) => {
+// Post Method and Create Operation
+export const postData = (post) => {
   return api.post("/posts", post);
+};
+
+// Delete Method and Delete Operation
+export const deleteData = (id) => {
+  return api.delete(`/posts/${id}`);
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PostData } from "../API/GetApi";
+import { postData } from "../API/GetApi";
 
 export const Form = ({ data, setData }) => {
   const [addData, setAddData] = useState({
@@ -8,11 +8,15 @@ export const Form = ({ data, setData }) => {
   });
 
   const addPostData = async () => {
-    const res = await PostData(addData);
+    try {
+      const res = await postData(addData);
 
-    if (res.status === 201) {
-      setData([...data, res.data]);
-      setAddData({ title: "", body: "" });
+      if (res.status === 201) {
+        setData([...data, res.data]);
+        setAddData({ title: "", body: "" });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
