@@ -1,11 +1,25 @@
-import { useState } from "react";
-import { postData } from "../API/GetApi";
+import { useEffect, useState } from "react";
+import { postData, updatePost } from "../API/GetApi";
 
-export const Form = ({ data, setData }) => {
+export const Form = ({ data, setData, updateDataApi, setUpdateDataApi }) => {
   const [addData, setAddData] = useState({
     title: "",
     body: "",
   });
+
+  const isEmpty = Object.keys(updateDataApi).length === 0;
+
+  const showData = () => {
+    updateDataApi &&
+      setAddData({
+        title: updateDataApi.title || "",
+        body: updateDataApi.body || "",
+      });
+  };
+
+  useEffect(() => {
+    showData();
+  }, [updateDataApi]);
 
   const addPostData = async () => {
     try {
@@ -20,9 +34,32 @@ export const Form = ({ data, setData }) => {
     }
   };
 
+  const updatePostData = async () => {
+    try {
+      const res = await updatePost(updateDataApi.id, addData);
+      if (res.status === 200) {
+        setData((prev) => {
+          return prev.map((curData) => {
+            return curData.id === res.data.id ? res.data : curData;
+          });
+        });
+        setAddData({ title: "", body: "" });
+        setUpdateDataApi({});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleOnSubmit = (evt) => {
     evt.preventDefault();
-    addPostData();
+    console.log(evt);
+    const action = evt.nativeEvent.submitter.value;
+    if (action === "Add") {
+      addPostData();
+    } else if (action === "Edit") {
+      updatePostData();
+    }
   };
 
   const handleInputData = (evt) => {
@@ -61,7 +98,9 @@ export const Form = ({ data, setData }) => {
             onChange={handleInputData}
           />
         </div>
-        <button type="submit">Add</button>
+        <button type="submit" value={isEmpty ? "Add" : "Edit"}>
+          {isEmpty ? "Add" : "Edit"}
+        </button>
       </form>
     </>
   );

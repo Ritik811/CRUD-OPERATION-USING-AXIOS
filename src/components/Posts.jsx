@@ -5,6 +5,10 @@ import { Form } from "./Form";
 
 export const Posts = () => {
   const [data, setData] = useState([]);
+  const [updateDataApi, setUpdateDataApi] = useState({});
+  const handleUpdatePost = (curPost) => {
+    setUpdateDataApi(curPost);
+  };
   const getData = async () => {
     const res = await getPost();
     console.log(res.data);
@@ -16,12 +20,25 @@ export const Posts = () => {
   return (
     <>
       <section className="section-form">
-        <Form data={data} setData={setData} />
+        <Form
+          data={data}
+          setData={setData}
+          updateDataApi={updateDataApi}
+          setUpdateDataApi={setUpdateDataApi}
+        />
       </section>
       <section className="section-post">
         <ol>
           {data.map((curPost) => {
-            return <Post key={curPost.id} curPost={curPost} data={data}setData={setData}/>;
+            return (
+              <Post
+                key={curPost.id}
+                curPost={curPost}
+                data={data}
+                setData={setData}
+                handleUpdatePost={handleUpdatePost}
+              />
+            );
           })}
         </ol>
       </section>

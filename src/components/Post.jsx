@@ -1,6 +1,6 @@
 import { deleteData } from "../API/GetApi";
 
-export const Post = ({ curPost, data, setData }) => {
+export const Post = ({ curPost, data, setData, handleUpdatePost }) => {
   const { body, title, id } = curPost;
   const handleDeletePost = async (id) => {
     console.log("Delete");
@@ -21,7 +21,7 @@ export const Post = ({ curPost, data, setData }) => {
     <li>
       <p>Title: {title}</p>
       <p>Body: {body}</p>
-      <button className="">Edit</button>
+      <button onClick={() => handleUpdatePost(curPost)}>Edit</button>
       <button className="btn-delete" onClick={() => handleDeletePost(id)}>
         Delete
       </button>
